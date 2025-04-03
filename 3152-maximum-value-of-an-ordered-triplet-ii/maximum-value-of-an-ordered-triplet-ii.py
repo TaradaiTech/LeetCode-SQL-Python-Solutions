@@ -1,38 +1,25 @@
-from typing import List
-
 class Solution:
     def maximumTripletValue(self, nums: List[int]) -> int:
-        n = len(nums)
-        
-        # If there are fewer than 3 elements, return 0 (no triplets possible)
-        if n < 3:
-            return 0
-
-        # Create an array to store the maximum value encountered from the left side for each index
-        max_left = [0] * n
-        max_left[0] = nums[0]
-        
-        # Fill the max_left array where each element is the maximum of all previous elements
-        for i in range(1, n):
-            max_left[i] = max(max_left[i - 1], nums[i])
-
-        # Create an array to store the maximum value encountered from the right side for each index
-        max_right = [0] * n
-        max_right[-1] = nums[-1]
-        
-        # Fill the max_right array where each element is the maximum of all subsequent elements
-        for i in range(n - 2, -1, -1):
-            max_right[i] = max(max_right[i + 1], nums[i])
-
-        # Initialize the result variable to store the maximum triplet value
+        # Initialize variables to track the highest seen number, the highest difference,
+        # and the result (maximum triplet value)
+        highest_seen = 0
+        highest_diff = 0
         max_triplet_value = 0
         
-        # Iterate through all possible middle elements of the triplet (excluding first and last index)
-        for i in range(1, n - 1):
-            # For each element at index 'i', calculate the value of the triplet
-            left = max_left[i - 1]  # The maximum value to the left of 'i'
-            right = max_right[i + 1]  # The maximum value to the right of 'i'
-            # Calculate the triplet value and update the result if it's greater than the current maximum
-            max_triplet_value = max(max_triplet_value, (left - nums[i]) * right)
-
+        # Iterate through each number in the input list
+        for num in nums:
+            # If the current triplet value (highest_diff * num) is greater than the current result,
+            # update the result
+            if highest_diff * num > max_triplet_value:
+                max_triplet_value = highest_diff * num
+            
+            # If the difference between the highest seen number and the current number is greater 
+            # than the current highest_diff, update highest_diff
+            if highest_seen - num > highest_diff:
+                highest_diff = highest_seen - num
+            
+            # If the current number is greater than the highest seen so far, update highest_seen
+            if num > highest_seen:
+                highest_seen = num
+        
         return max_triplet_value
