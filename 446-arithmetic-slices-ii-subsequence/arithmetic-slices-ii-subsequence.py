@@ -2,15 +2,25 @@ from collections import defaultdict
 
 class Solution:
     def numberOfArithmeticSlices(self, nums: List[int]) -> int:
-        n = len(nums)
-        dp = [defaultdict(int) for _ in range(n)]
-        total = 0
+        if len(nums) < 3:
+            return 0
 
-        for i in range(n):
+        seen = defaultdict(list)
+        dp = {}
+        ans = 0
+
+        # Pre-fill the seen dict with indices of each number
+        for i, num in enumerate(nums):
+            seen[num].append(i)
+
+        for i in range(2, len(nums)):
             for j in range(i):
-                diff = nums[i] - nums[j]
-                cnt = dp[j][diff]
-                dp[i][diff] += cnt + 1
-                total += cnt  # Only extend existing sequences (length ≥3)
+                needed = 2 * nums[j] - nums[i]
+                if needed in seen:
+                    for k in seen[needed]:
+                        if k < j:
+                            count = 1 + dp.get((k, j), 0)
+                            dp[(j, i)] = dp.get((j, i), 0) + count
+                            ans += count
 
-        return total
+        return ans
