@@ -6,3 +6,5 @@ from
     employees
 group by
     day, emp_id
+order by
+    total_time
