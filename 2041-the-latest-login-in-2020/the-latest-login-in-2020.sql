@@ -4,6 +4,6 @@ select
 from
     logins
 where
-    time_stamp between '2020-01-01 00:00:00' and '2020-12-31 23:59:59'
+    extract(year from time_stamp) = 2020
 group by
     user_id;
