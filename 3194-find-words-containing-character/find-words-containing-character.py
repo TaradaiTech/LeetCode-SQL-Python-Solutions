@@ -1,9 +1,7 @@
-class Solution(object):
-    def findWordsContaining(self, words, x):
-        res = []
-        for i, j in enumerate(words):
-            for cha in j:
-                if cha == x:
-                    res.append(i)
-                    break
-        return res
+class Solution:
+    def findWordsContaining(self, words: List[str], x: str) -> List[int]:
+        indices=[]
+        for i in range(len(words)):
+            if x in words[i]:
+                indices.append(i)
+        return indices
