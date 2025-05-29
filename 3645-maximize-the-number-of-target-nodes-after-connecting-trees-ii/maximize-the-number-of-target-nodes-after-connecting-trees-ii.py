@@ -4,7 +4,7 @@ class Solution:
         adj1 = [[] for _ in range(n)]
         adj2 = [[] for _ in range(m)]
         mod2 = [False] * n  # parity for nodes in tree1
-
+        
         def build_adj(edges, adj):
             for u, v in edges:
                 adj[u].append(v)
