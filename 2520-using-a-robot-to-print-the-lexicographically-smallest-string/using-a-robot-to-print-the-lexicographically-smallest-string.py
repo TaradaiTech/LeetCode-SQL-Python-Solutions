@@ -1,20 +1,21 @@
-from collections import Counter
-
 class Solution:
     def robotWithString(self, s: str) -> str:
-        ctr, lo, t, p = Counter(s), 'a', [], []
+        n = len(s)
+        min_suffix = [''] * n
+        min_suffix[-1] = s[-1]
 
-        for ch in s:
-            t.append(ch)
-            ctr[ch] -= 1
-            if ctr[ch] == 0:
-                del ctr[ch]
-            # Update `lo` to the next smallest available char
-            if lo != 'z' and lo not in ctr:
-                lo = min(ctr, default='z')
+        # Build suffix min array
+        for i in range(n - 2, -1, -1):
+            min_suffix[i] = min(s[i], min_suffix[i + 1])
 
-            # Write to paper if top of `t` is <= smallest remaining char
-            while t and t[-1] <= lo:
-                p.append(t.pop())
+        stack = []
+        result = []
 
-        return ''.join(p)
+        for i in range(n):
+            stack.append(s[i])
+
+            # While top of stack <= smallest remaining in s
+            while stack and (i == n - 1 or stack[-1] <= min_suffix[i + 1]):
+                result.append(stack.pop())
+
+        return ''.join(result)
